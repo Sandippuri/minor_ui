@@ -20,7 +20,7 @@ const Tutorial = () => {
     return (
     <>
   <div className="container my-5 ">
-    <h1 className='text-center mb-5'>How to use?</h1>
+    <h1 className='text-center mb-5' style={{fontSize:'3.5rem',fontWeight:"bold",paddingTop:"2rem"}}>How to use?</h1>
     <section id="header" className="d-flex align-items-center">
                 <div className="container-fluid nav_bg">
                     <div className="col-10 mx-auto">

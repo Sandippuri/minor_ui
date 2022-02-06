@@ -45,15 +45,16 @@ const iconstyle = { fontSize: "14px" }
 const FooterContainer = styled.div`
 
       background-color: #212529;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      position: relative;
-      bottom: 0px;
-      width: 100%;
       color: white;
       text-align: center;
       padding-bottom: 2vh;
+      position: relative;
+      margin-top: auto;
+      
     `;
 
 const paragraph = {

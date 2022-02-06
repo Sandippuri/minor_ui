@@ -38,9 +38,9 @@ const Navbar = () => {
     return (
         <>
             <nav className="navbar navbar-dark bg-dark">
-                <div className="container-fluid d-flex">
+                <div className="container-fluid d-flex mx-3 my-1">
                     <Links className="navbar-brand d-flex" to="/">
-                        <img src={logo} alt="" height="60" />
+                        <img src={logo} alt="..." height="60" />
                         <div className='mx-2'>Old Image <br /> Restoration</div>
                     </Links>
 
