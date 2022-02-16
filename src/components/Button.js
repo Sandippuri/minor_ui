@@ -29,19 +29,20 @@ color: #fff;
 }
 `;
 const Button = (props) => {
-const buttonstyle = {
-  fontSize:"2rem",
-  paddingTop:"4px",
-  paddingLeft:"5px",
-  marginLeft:"2rem"
-}
-  return <>
-  <div className="fluid-container d-flex my-4 justify-content-center">
-    <Buttons to="/converter">
-    {props.name} <FontAwesomeIcon icon={faAngleDoubleRight} style={buttonstyle} />
-    </Buttons>
+  const buttonstyle = {
+    fontSize: "2rem",
+    paddingTop: "4px",
+    paddingLeft: "5px",
+    marginLeft: "2rem"
+  }
 
-  </div>
+  return <>
+    <div className="fluid-container d-flex my-4 justify-content-center">
+      <Buttons to="/converter" onClick={props.task} type='submit'>
+        {props.name} <FontAwesomeIcon icon={faAngleDoubleRight} style={buttonstyle} />
+      </Buttons>
+
+    </div>
   </>;
 };
 
