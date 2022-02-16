@@ -57,7 +57,8 @@ const ImageContainer = () => {
       setImages(acceptedFiles.map(image => Object.assign(image, {
         preview: URL.createObjectURL(image)
       })));
-    }
+    },
+
   });
 
   const thumbs = images.map(image => (
@@ -82,7 +83,7 @@ const ImageContainer = () => {
     let form_data = new FormData();
     if (images !== null) {
       console.log(images);
-      form_data.append('image',images)
+      form_data.append('image',images[0])
     }
     let url = 'http://localhost:8000/api/old_image/';
     axios.post(url, form_data, {
@@ -101,7 +102,7 @@ const ImageContainer = () => {
           <div {...getRootProps({ className: 'dropzone' })} style={DragNdropContainer}>
         <form>
               <input {...getInputProps()} type="file"
-                id="inputImage" accept="image/png, image/jpeg" required/>
+                id="inputImage" accept="image/png, image/jpeg" name ="image"/>
             <ImageNText>
               <img src={dragNdrop} alt="dragndrop" height="120px"
                 width="160px" />
@@ -121,59 +122,3 @@ const ImageContainer = () => {
 };
 
 export default ImageContainer;
-
-
-
-
-// class App extends Component {
-
-//   state = {
-//     image: null
-//   };
-
-//   handleChange = (e) => {
-//     this.setState({
-//       [e.target.id]: e.target.value
-//     })
-//   };
-
-//   handleImageChange = (e) => {
-//     this.setState({
-//       image: e.target.files[0]
-//     })
-//   };
-
-//   handleSubmit = (e) => {
-//     e.preventDefault();
-//     console.log(this.state);
-//     let form_data = new FormData();
-//     form_data.append('image', this.state.image, this.state.image.name);
-//     let url = 'http://localhost:8000/api/old_image/';
-//     axios.post(url, form_data, {
-//       headers: {
-//         'content-type': 'multipart/form-data'
-//       }
-//     })
-//         .then(res => {
-//           console.log(res.data);
-//         })
-//         .catch(err => console.log(err))
-//   };
-
-//   render() {
-//     return (
-//       <div className="App">
-//         <form onSubmit={this.handleSubmit}>
-//           <p>
-//             <input type="file"
-//                    id="image"
-//                    accept="image/png, image/jpeg"  onChange={this.handleImageChange} required/>
-//           </p>
-//           <input type="submit"/>
-//         </form>
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;
