@@ -1,10 +1,10 @@
-import React, { useState, useEffect, Component } from "react";
-import Dropzone from 'react-dropzone';
+import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import dragNdrop from '../images/drgndrop.png';
 import { useDropzone } from 'react-dropzone';
 import Button from '../components/Button';
 import axios from "axios";
+import Dropdown from "./Dropdown";
 
 const ImageNText = styled.div`
 
@@ -48,7 +48,6 @@ const img = {
   maxWidth: "100vw"
 };
 
-
 const ImageContainer = () => {
   const [images, setImages] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -83,7 +82,7 @@ const ImageContainer = () => {
     let form_data = new FormData();
     if (images !== null) {
       console.log(images);
-      form_data.append('image',images[0])
+      form_data.append('image', images[0])
     }
     let url = 'http://localhost:8000/api/old_image/';
     axios.post(url, form_data, {
@@ -99,22 +98,26 @@ const ImageContainer = () => {
   return (
     <>
       <div className="container">
-          <div {...getRootProps({ className: 'dropzone' })} style={DragNdropContainer}>
-        <form>
-              <input {...getInputProps()} type="file"
-                id="inputImage" accept="image/png, image/jpeg" name ="image"/>
+        <div {...getRootProps({ className: 'dropzone' })} style={DragNdropContainer}>
+          <form>
+            <input {...getInputProps()} type="file"
+              id="inputImage" accept="image/png, image/jpeg" name="image" />
             <ImageNText>
               <img src={dragNdrop} alt="dragndrop" height="120px"
                 width="160px" />
               <p>Drag 'n' drop some files here, or click to select files</p>
             </ImageNText>
-        </form>
-          </div>
+          </form>
+        </div>
         <aside className="container" style={thumbsContainer}>
           {thumbs}
         </aside>
       </div>
-      <Button name="Convert" task={handleSubmit}></Button>
+      <div style={{ display:"flex",flexDirection:"row",justifyContent:"center",alignItems: "center"}}>
+        <Dropdown/>
+        <Button name="Convert" task={handleSubmit}></Button>
+      </div>
+
     </>
   );
 
