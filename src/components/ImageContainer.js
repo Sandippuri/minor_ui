@@ -45,18 +45,32 @@ const thumbInner = {
 };
 
 const img = {
-  maxWidth: "100vw"
+  minWidth: "60vw",
+  minheight: "60vh",
+  width: "60vw",
+  height: "60vh",
+  objectFit:"scale-down"
 };
 
+
+
 const ImageContainer = () => {
+
   const [images, setImages] = useState([]);
+  const [newImages, setnewImages] = useState();
+  const [newImageArrived, setnewImageArrived] = useState(false);
+  const [imagePreview, setImagePreview] = useState(false);
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     onDrop: acceptedFiles => {
+      setImagePreview(true);
       setImages(acceptedFiles.map(image => Object.assign(image, {
         preview: URL.createObjectURL(image)
       })));
-    },
+
+    }
+
 
   });
 
@@ -95,33 +109,84 @@ const ImageContainer = () => {
       })
       .catch(err => console.log(err))
   };
-  return (
-    <>
-      <div className="container">
-        <div {...getRootProps({ className: 'dropzone' })} style={DragNdropContainer}>
-          <form>
-            <input {...getInputProps()} type="file"
-              id="inputImage" accept="image/png, image/jpeg" name="image" />
-            <ImageNText>
-              <img src={dragNdrop} alt="dragndrop" height="120px"
-                width="160px" />
-              <p>Drag 'n' drop some files here, or click to select files</p>
-            </ImageNText>
-          </form>
-        </div>
-        <aside className="container" style={thumbsContainer}>
+
+
+  const throwError = () => {
+    alert("Please select the image first !!!")
+  }
+
+  useEffect(()=>{
+    axios({
+      method: 'get',
+      url: 'http://127.0.0.1:8000/api/old_image',
+    })
+      .then((response)=>{
+       const data=response.data
+        console.log(data);
+        setnewImages(data.image);
+        setnewImageArrived(true);
+      });
+
+  },[images]);
+
+  if (imagePreview) {
+    return (
+      <>
+        <div className="container" style={thumbsContainer}>
           {thumbs}
-        </aside>
-      </div>
-      <div style={{ display:"flex",flexDirection:"row",justifyContent:"center",alignItems: "center"}}>
-        <Dropdown/>
-        <Button name="Convert" task={handleSubmit}></Button>
-      </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",padding:"10px 20px" }}>
+          <Dropdown />
+          <button type="button" className="btn btn-dark" onClick={handleSubmit}>Convert</button>
+          {/* <Button name="Convert" task={handleSubmit}></Button> */}
+        </div>
+      </>
+    );
+  }
+  // else if(newImageArrived){
+  //   return (
+  //     <>
+  //       <div className="container" style={thumbsContainer}>
+  //       {newImages}
+  //       </div>
+  //       <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",padding:"10px 20px" }}>
+  //         <Dropdown />
+  //         <button type="button" className="btn btn-dark" onClick={handleSubmit}>Convert</button>
+  //         {/* <Button name="Convert" task={handleSubmit}></Button> */}
+  //       </div>
+  //     </>)
 
-    </>
-  );
+  // } 
+  else {
+    return (
+      <>
+        <div className="container">
+          <div {...getRootProps({ className: 'dropzone' })} style={DragNdropContainer}>
+            <form>
+              <input {...getInputProps()} type="file"
+                id="inputImage" accept="image/png, image/jpeg" name="image" />
+              <ImageNText>
+                <img src={dragNdrop} alt="dragndrop" height="120px"
+                  width="160px" />
+                <p>Drag 'n' drop some files here, or click to select files</p>
+              </ImageNText>
+            </form>
+          </div>
+        </div>
+        
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",padding:"10px 20px" }}>
+        
+          <Dropdown />
+          <button type="button" className="btn btn-dark" onClick={throwError}>Convert</button>
+          {/* <Button name="Convert" task={throwError}></Button> */}
+        </div>
+      </>
 
+    );
+    
+  }
 
+  
 };
 
 export default ImageContainer;

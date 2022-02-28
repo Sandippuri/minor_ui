@@ -11,16 +11,16 @@ import axios from 'axios';
 
 
 function App() {
-  useEffect(()=>{
-    axios({
-      method: 'get',
-      url: 'http://127.0.0.1:8000/api/new_image',
-    })
-      .then((response)=>{
-        console.log(response.data);
-      });
+  // useEffect(()=>{
+  //   axios({
+  //     method: 'get',
+  //     url: 'http://127.0.0.1:8000/api/image',
+  //   })
+  //     .then((response)=>{
+  //       console.log(response.data);
+  //     });
 
-  })
+  // })
   return (
     <>
       <Router>
