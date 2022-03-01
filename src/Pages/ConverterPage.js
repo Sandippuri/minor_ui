@@ -20,7 +20,6 @@ const ConverterPage = () => {
 
   return (
   <>
-  <TextContainer></TextContainer>
     <ImageContainer></ImageContainer>
     {/* <Button name="Convert" task={handleSubmit}></Button> */}
   </>);

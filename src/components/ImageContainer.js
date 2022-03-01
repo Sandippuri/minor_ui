@@ -2,9 +2,22 @@ import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import dragNdrop from '../images/drgndrop.png';
 import { useDropzone } from 'react-dropzone';
-import Button from '../components/Button';
+// import Button from '../components/Button';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import axios from "axios";
 import Dropdown from "./Dropdown";
+import { padding } from "@mui/system";
+import TextContainer from "./TextContainer";
+import Backdrop from '@mui/material/Backdrop';
 
 const ImageNText = styled.div`
 
@@ -49,17 +62,23 @@ const img = {
   minheight: "60vh",
   width: "60vw",
   height: "60vh",
-  objectFit:"scale-down"
+  objectFit: "scale-down"
 };
 
 
 
 const ImageContainer = () => {
 
+  const [dropdownValue, setdropdownValue] = React.useState('');
   const [images, setImages] = useState([]);
   const [newImages, setnewImages] = useState();
   const [newImageArrived, setnewImageArrived] = useState(false);
   const [imagePreview, setImagePreview] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
+
+  const handleChange = (event) => {
+    setdropdownValue(event.target.value);
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -90,12 +109,30 @@ const ImageContainer = () => {
     images.forEach(image => URL.revokeObjectURL(image.preview));
   }, [images]);
 
+  const getOutput = () => {
+
+    axios({
+      method: 'get',
+      url: 'http://127.0.0.1:8000/api/old_image',
+    })
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        setnewImages(data[0].n_image);
+        setnewImageArrived(true);
+        setisLoading(false);
+        console.log("new image arrived");
+      });
+  }
+
   const handleSubmit = (e) => {
-    console.log("object");
     e.preventDefault();
+    setImagePreview(false);
+    setisLoading(true);
+    // handleToggle();
     let form_data = new FormData();
     if (images !== null) {
-      console.log(images);
+      // console.log(images);
       form_data.append('image', images[0])
     }
     let url = 'http://localhost:8000/api/old_image/';
@@ -104,10 +141,14 @@ const ImageContainer = () => {
         'content-type': 'multipart/form-data'
       }
     })
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => console.log(err))
+    setTimeout(getOutput, 5000);
+    // setisLoading(false);
+    // .then((res) => {
+    //   console.log(res.data);
+    //   console.log(res.data.id);
+    // })
+    // .catch(err => console.log(err));
+
   };
 
 
@@ -115,51 +156,90 @@ const ImageContainer = () => {
     alert("Please select the image first !!!")
   }
 
-  useEffect(()=>{
-    axios({
-      method: 'get',
-      url: 'http://127.0.0.1:8000/api/old_image',
-    })
-      .then((response)=>{
-       const data=response.data
-        console.log(data);
-        setnewImages(data.image);
-        setnewImageArrived(true);
-      });
+  const downloadImage = () => {
+    console.log("downloaded image");
+  }
+  // const [open, setOpen] = React.useState(false);
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+  // const handleToggle = () => {
+  //   setOpen(!open);
+  // };
 
-  },[images]);
+  // useEffect(() => {
+  //   axios({
+  //     method: 'get',
+  //     url: 'http://127.0.0.1:8000/api/old_image',
+  //   })
+  //     .then((response) => {
+  //       const data = response.data;
+  //       console.log(data);
+  //       // setnewImages(data[0].n_image);
+  //       // setnewImageArrived(true);
+  //     });
+
+  // }, [images]);
 
   if (imagePreview) {
     return (
       <>
+        <TextContainer message={"Select the method and Press convert"} />
         <div className="container" style={thumbsContainer}>
           {thumbs}
         </div>
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",padding:"10px 20px" }}>
-          <Dropdown />
-          <button type="button" className="btn btn-dark" onClick={handleSubmit}>Convert</button>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", padding: "10px 20px" }}>
+          <FormControl sx={{ mr: 5, minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={dropdownValue}
+              label="Age"
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+            </Select>
+          </FormControl>
+          <Button variant="contained" sx={{ backgroundColor: "black", margin: "5px", padding: '16px' }} size="large" onClick={handleSubmit} >Convert</Button>
+          {/* <button type="button" className="btn btn-dark" onClick={handleSubmit}>Convert</button> */}
           {/* <Button name="Convert" task={handleSubmit}></Button> */}
         </div>
       </>
     );
   }
-  // else if(newImageArrived){
-  //   return (
-  //     <>
-  //       <div className="container" style={thumbsContainer}>
-  //       {newImages}
-  //       </div>
-  //       <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",padding:"10px 20px" }}>
-  //         <Dropdown />
-  //         <button type="button" className="btn btn-dark" onClick={handleSubmit}>Convert</button>
-  //         {/* <Button name="Convert" task={handleSubmit}></Button> */}
-  //       </div>
-  //     </>)
+  else if (isLoading) {
+    return (
+      <>
+        <div>
+            screen loading
+        </div>
+      </>
+    );
+  }
+  else if (newImageArrived) {
+    return (
+      <>
+        <TextContainer message={"Your image is restored successfully"} />
+        <div className="container" style={thumbsContainer}>
+          {newImages}
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", padding: "10px 20px" }}>
+          <Button variant="contained" sx={{ backgroundColor: "black", margin: "5px", padding: '16px' }} size="large" onClick={downloadImage} >Download</Button>
 
-  // } 
+        </div>
+      </>)
+
+  }
+
   else {
     return (
       <>
+        <TextContainer message={"Drag and Drop or Click on the area below to upload the file"} />
         <div className="container">
           <div {...getRootProps({ className: 'dropzone' })} style={DragNdropContainer}>
             <form>
@@ -173,20 +253,34 @@ const ImageContainer = () => {
             </form>
           </div>
         </div>
-        
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",padding:"10px 20px" }}>
-        
-          <Dropdown />
-          <button type="button" className="btn btn-dark" onClick={throwError}>Convert</button>
-          {/* <Button name="Convert" task={throwError}></Button> */}
+
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", padding: "10px 20px" }}>
+          <FormControl sx={{ mr: 5, minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={dropdownValue}
+              label="Age"
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+            </Select>
+          </FormControl>
+          <Button variant="contained" sx={{ backgroundColor: "black", margin: "5px", padding: '16px' }} size="large" onClick={throwError} >Convert</Button>
+
         </div>
       </>
 
     );
-    
+
   }
 
-  
+
 };
 
 export default ImageContainer;

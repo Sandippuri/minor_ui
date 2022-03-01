@@ -6,10 +6,10 @@ color: black;
 text-align: center;
 margin: 2rem 3rem;
 `
-const TextContainer = () => {
+const TextContainer = (props) => {
   return <>
  <div className="container">
-  <Heading>Drag and Drop or Click on the area below to upload the file</Heading>
+  <Heading>{props.message}</Heading>
 
  </div>
   </>;
