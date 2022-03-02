@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Link as LinkS } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPhoneAlt,faArrowAltCircleRight,faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithubAlt,
   faGoogle,
@@ -81,6 +80,7 @@ const Footer = () => {
       </div>
       <div>
           <NavItems>
+              <Links to="/converter"><FontAwesomeIcon icon={faArrowAltCircleRight} style={iconstyle} /> Convert</Links>
               <Links to="/tutorial"><FontAwesomeIcon icon={faFileAlt} style={iconstyle} /> How to use?</Links>
               <Links to="/contact"><FontAwesomeIcon icon={faPhoneAlt} style={iconstyle} /> Contact us</Links>
           </NavItems>

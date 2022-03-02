@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import logo from '../images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPhoneAlt,faArrowAltCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { Link as LinkS } from 'react-router-dom';
 
 const NavMenu = styled.div`
@@ -47,9 +47,11 @@ const Navbar = () => {
                     <NavMenu>
                         <NavItems>
                             <Navlinks>
+                                <Links to="/converter"><FontAwesomeIcon icon={faArrowAltCircleRight} style={iconstyle} /> Convert</Links>
+                            </Navlinks>
+                            <Navlinks>
                                 <Links to="/tutorial"><FontAwesomeIcon icon={faFileAlt} style={iconstyle} /> How to use?</Links>
                             </Navlinks>
-
                             <Navlinks>
                                 <Links to="/contact"><FontAwesomeIcon icon={faPhoneAlt} style={iconstyle} /> Contact us</Links>
                             </Navlinks>
