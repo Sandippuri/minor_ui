@@ -18,13 +18,21 @@ import Dropdown from "./Dropdown";
 import { padding } from "@mui/system";
 import TextContainer from "./TextContainer";
 import Backdrop from '@mui/material/Backdrop';
-
+import Video from '../Video/backVideo.mp4';
 const ImageNText = styled.div`
 
 text-align: center;
 justify-content: center;
 
 `;
+
+const VideoBg = styled.video`
+width:100%;
+height:100%;
+object-fit:cover;
+-o-object-fit:cover;
+`;
+
 const DragNdropContainer = {
   border: "1px dashed grey",
   padding: "25vh 0",
@@ -105,6 +113,7 @@ const ImageContainer = () => {
     </div>
   ));
 
+
   useEffect(() => {
     images.forEach(image => URL.revokeObjectURL(image.preview));
   }, [images]);
@@ -118,7 +127,7 @@ const ImageContainer = () => {
       .then((response) => {
         const data = response.data;
         console.log(data);
-        setnewImages(data[0].n_image);
+        setnewImages("http://127.0.0.1:8000" + data[0].n_image);
         setnewImageArrived(true);
         setisLoading(false);
         console.log("new image arrived");
@@ -215,9 +224,7 @@ const ImageContainer = () => {
   else if (isLoading) {
     return (
       <>
-        <div>
-            screen loading
-        </div>
+        <VideoBg autoPlay muted src={Video} type='video/mp4' />
       </>
     );
   }
@@ -226,7 +233,15 @@ const ImageContainer = () => {
       <>
         <TextContainer message={"Your image is restored successfully"} />
         <div className="container" style={thumbsContainer}>
-          {newImages}
+          <div style={thumb}>
+            <div style={thumbInner}>
+              <img
+                src={newImages}
+                style={img}
+                alt="New Image"
+              />
+            </div>
+          </div>
         </div>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", padding: "10px 20px" }}>
           <Button variant="contained" sx={{ backgroundColor: "black", margin: "5px", padding: '16px' }} size="large" onClick={downloadImage} >Download</Button>
