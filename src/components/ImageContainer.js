@@ -118,13 +118,13 @@ const ImageContainer = () => {
     images.forEach(image => URL.revokeObjectURL(image.preview));
   }, [images]);
 
-  const getOutput = () => {
+  const getOutput = async () => {
 
-    axios({
-      method: 'get',
-      url: 'http://127.0.0.1:8000/api/old_image',
-    })
-      .then((response) => {
+    try{
+      await axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8000/api/old_image',
+      }).then((response) => {
         const data = response.data;
         console.log(data);
         setnewImages("http://127.0.0.1:8000" + data[0].n_image);
@@ -132,6 +132,9 @@ const ImageContainer = () => {
         setisLoading(false);
         console.log("new image arrived");
       });
+    }catch(e){
+      console.log(e);
+    }
   }
 
   const handleSubmit = (e) => {
@@ -149,9 +152,11 @@ const ImageContainer = () => {
       headers: {
         'content-type': 'multipart/form-data'
       }
-    })
-    setTimeout(getOutput, 5000);
-    // setisLoading(false);
+    });
+    // getOutput();
+
+    setTimeout(getOutput,4000);
+
     // .then((res) => {
     //   console.log(res.data);
     //   console.log(res.data.id);
