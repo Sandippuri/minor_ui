@@ -87,6 +87,8 @@ const ImageContainer = () => {
   const [newImageArrived, setnewImageArrived] = useState(false);
   const [imagePreview, setImagePreview] = useState(false);
   const [isLoading, setisLoading] = useState(false);
+  const [fetchingImage, setFetchingImage] = useState(true);
+  var intervalID = 0
 
   const handleChange = (event) => {
     setdropdownValue(event.target.value);
@@ -130,11 +132,18 @@ const ImageContainer = () => {
         url: 'http://127.0.0.1:8000/api/old_image',
       }).then((response) => {
         const data = response.data;
-        console.log(data);
+        if (data.length == 0 || data == undefined) {
+            return
+        }
+        if(data[0].n_image.includes('Default.jpg')) {
+            return
+        } 
+        setFetchingImage(false);
         setnewImages("http://127.0.0.1:8000" + data[0].n_image);
         setnewImageArrived(true);
         setisLoading(false);
         console.log("new image arrived");
+        clearInterval(intervalID)
       });
     } catch (e) {
       console.log(e);
@@ -157,17 +166,15 @@ const ImageContainer = () => {
       headers: {
         'content-type': 'multipart/form-data'
       }
-    });
-    // getOutput();
+    })
 
-    setTimeout(getOutput, 4000);
+    intervalID = setInterval(getOutput, 1000)
 
-    // .then((res) => {
-    //   console.log(res.data);
-    //   console.log(res.data.id);
-    // })
-    // .catch(err => console.log(err));
+    if(!fetchingImage) {
+      clearInterval(intervalID)
 
+      intervalID = null
+    }
   };
 
 
