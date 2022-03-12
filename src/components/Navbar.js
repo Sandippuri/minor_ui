@@ -49,9 +49,9 @@ const Navbar = () => {
                             <Navlinks>
                                 <Links to="/converter"><FontAwesomeIcon icon={faArrowAltCircleRight} style={iconstyle} /> Convert</Links>
                             </Navlinks>
-                            <Navlinks>
+                            {/* <Navlinks>
                                 <Links to="/tutorial"><FontAwesomeIcon icon={faFileAlt} style={iconstyle} /> How to use?</Links>
-                            </Navlinks>
+                            </Navlinks> */}
                             <Navlinks>
                                 <Links to="/contact"><FontAwesomeIcon icon={faPhoneAlt} style={iconstyle} /> Contact us</Links>
                             </Navlinks>

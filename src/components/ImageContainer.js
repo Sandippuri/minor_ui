@@ -19,6 +19,10 @@ import { padding } from "@mui/system";
 import TextContainer from "./TextContainer";
 import Backdrop from '@mui/material/Backdrop';
 import Video from '../Video/backVideo.mp4';
+import BarWave from "react-cssfx-loading/lib/BarWave";
+import { Hypnosis } from "react-cssfx-loading/lib";
+
+
 const ImageNText = styled.div`
 
 text-align: center;
@@ -120,7 +124,7 @@ const ImageContainer = () => {
 
   const getOutput = async () => {
 
-    try{
+    try {
       await axios({
         method: 'get',
         url: 'http://127.0.0.1:8000/api/old_image',
@@ -132,7 +136,7 @@ const ImageContainer = () => {
         setisLoading(false);
         console.log("new image arrived");
       });
-    }catch(e){
+    } catch (e) {
       console.log(e);
     }
   }
@@ -146,6 +150,7 @@ const ImageContainer = () => {
     if (images !== null) {
       // console.log(images);
       form_data.append('image', images[0])
+      form_data.append('method',dropdownValue)
     }
     let url = 'http://localhost:8000/api/old_image/';
     axios.post(url, form_data, {
@@ -155,7 +160,7 @@ const ImageContainer = () => {
     });
     // getOutput();
 
-    setTimeout(getOutput,4000);
+    setTimeout(getOutput, 4000);
 
     // .then((res) => {
     //   console.log(res.data);
@@ -204,19 +209,19 @@ const ImageContainer = () => {
         </div>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", padding: "10px 20px" }}>
           <FormControl sx={{ mr: 5, minWidth: 150 }}>
-            <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-helper-label">Method</InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               value={dropdownValue}
-              label="Age"
+              label="Method"
               onChange={handleChange}
             >
               <MenuItem value="">
-                <em>None</em>
               </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={1}>Self-Made</MenuItem>
+              <MenuItem value={2}>Self-Made II</MenuItem>
+              <MenuItem value={3}>Microsoft</MenuItem>
             </Select>
           </FormControl>
           <Button variant="contained" sx={{ backgroundColor: "black", margin: "5px", padding: '16px' }} size="large" onClick={handleSubmit} >Convert</Button>
@@ -229,7 +234,14 @@ const ImageContainer = () => {
   else if (isLoading) {
     return (
       <>
-        <VideoBg autoPlay muted src={Video} type='video/mp4' />
+        <div style={{ padding: "35vh", display: "flex", justifyContent: "center", flexDirection:"column" ,alignItems:"center"}}>
+     
+            <Hypnosis color="#01Bf71" width="100px" height="100px" duration="3s" />
+            <p>please wait while we are restoring your image</p>
+ 
+
+    
+        </div>
       </>
     );
   }
@@ -275,8 +287,8 @@ const ImageContainer = () => {
         </div>
 
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", padding: "10px 20px" }}>
-          <FormControl sx={{ mr: 5, minWidth: 150 }}>
-            <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+          {/* <FormControl sx={{ mr: 5, minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-helper-label">Method</InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
@@ -285,12 +297,11 @@ const ImageContainer = () => {
               onChange={handleChange}
             >
               <MenuItem value="">
-                <em>None</em>
               </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={1}>Self-Made</MenuItem>
+              <MenuItem value={2}>Microsoft</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
           <Button variant="contained" sx={{ backgroundColor: "black", margin: "5px", padding: '16px' }} size="large" onClick={throwError} >Convert</Button>
 
         </div>
