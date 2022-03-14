@@ -4,24 +4,25 @@ import dragNdrop from '../images/drgndrop.png';
 import { useDropzone } from 'react-dropzone';
 // import Button from '../components/Button';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+// import CircularProgress from '@mui/material/CircularProgress';
+// import Box from '@mui/material/Box';
+// import Typography from '@mui/material/Typography';
+// import Modal from '@mui/material/Modal';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
+// import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from "axios";
-import Dropdown from "./Dropdown";
-import { padding } from "@mui/system";
+// import Dropdown from "./Dropdown";
+// import { padding } from "@mui/system";
 import TextContainer from "./TextContainer";
-import Backdrop from '@mui/material/Backdrop';
-import Video from '../Video/backVideo.mp4';
-import BarWave from "react-cssfx-loading/lib/BarWave";
+// import Backdrop from '@mui/material/Backdrop';
+// import Video from '../Video/backVideo.mp4';
+// import BarWave from "react-cssfx-loading/lib/BarWave";
 import { Hypnosis } from "react-cssfx-loading/lib";
 
+var FileSaver = require('file-saver');
 
 const ImageNText = styled.div`
 
@@ -30,19 +31,19 @@ justify-content: center;
 
 `;
 
-const VideoBg = styled.video`
-width:100%;
-height:100%;
-object-fit:cover;
--o-object-fit:cover;
-`;
+// const VideoBg = styled.video`
+// width:100%;
+// height:100%;
+// object-fit:cover;
+// -o-object-fit:cover;
+// `;
 
 const DragNdropContainer = {
   border: "1px dashed grey",
   padding: "25vh 0",
   display: "flex",
   justifyContent: "center",
-  backgroundColor: "#d3d3d3"
+  backgroundColor: "#ebecf0"
 };
 
 const thumbsContainer = {
@@ -132,7 +133,7 @@ const ImageContainer = () => {
         url: 'http://127.0.0.1:8000/api/old_image',
       }).then((response) => {
         const data = response.data;
-        if (data.length == 0 || data == undefined) {
+        if (data.length === 0 || data === undefined) {
             return
         }
         if(data[0].n_image.includes('Default.jpg')) {
@@ -156,7 +157,7 @@ const ImageContainer = () => {
     setisLoading(true);
     // handleToggle();
     let form_data = new FormData();
-    if (images !== null) {
+    if (images !== null && dropdownValue !==null) {
       // console.log(images);
       form_data.append('image', images[0])
       form_data.append('method',dropdownValue)
@@ -183,7 +184,8 @@ const ImageContainer = () => {
   }
 
   const downloadImage = () => {
-    console.log("downloaded image");
+    FileSaver.saveAs(newImages, "image.jpg");
+    console.log("downloaded")
   }
   // const [open, setOpen] = React.useState(false);
   // const handleClose = () => {
@@ -262,7 +264,7 @@ const ImageContainer = () => {
               <img
                 src={newImages}
                 style={img}
-                alt="New Image"
+                alt="newPhoto"
               />
             </div>
           </div>
